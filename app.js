@@ -14,11 +14,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(express.json());
 
-//add a date to every request
+//add a date to every request - probably they already have one
 app.use((req, res, next) => {
   req.requestTime = new Date();
   next();
-})
+});
 
 app.use(express.static(`${__dirname}/public`));
 
