@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
 
-// const formSchema = new mongoose.Schema({
-// 	form: {
-// 		_id: false,
-// 		type: Map,
-// 		of: String
-// 	}
-// });
-//
-// const chapterSchema = new mongoose.Schema({
-// 	chapter: {
-// 		_id: false,
-// 		type: Map,
-// 		of: formSchema
-// 	}
-// });
-
-
 const userSchema = new mongoose.Schema({
 	firstName: {
 		type: String,
@@ -44,12 +27,14 @@ const userSchema = new mongoose.Schema({
 		default: Date.now()
 	},
 	loginTime: {
-		type: Map,
-		of: Number
+		type: Date
+		// type: Map,
+		// of: Number
 	},
 	books: [
 		{ _id : false,
 			titleBook: String,
+			coverBook: String,
 			chapters: [
 				{
 					_id : false,
@@ -64,11 +49,12 @@ const userSchema = new mongoose.Schema({
 	]
 });
 
-const User = mongoose.model('User', userSchema);
-// const Form = mongoose.model('Form', formSchema);
-// const Chapter = mongoose.model('Chapter', chapterSchema);
+userSchema.pre(/^find/, function(next) {
+	this.loginTime = Date.now();
+	next();
+})
 
-// module.exports = Form;
-// module.exports = Chapter;
+
+const User = mongoose.model('User', userSchema);
 module.exports = User;
 

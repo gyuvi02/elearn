@@ -1,27 +1,27 @@
 const User = require('./../models/userModel');
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require("../utils/appError");
 
-exports.getAllUsers = async (req, res) => {
-  try {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
     const users = await User.find();
-
     res.status(200).json({
       status: 'success',
       data: {
         users
       }
     });
-  } catch (err){
-    res.status(404).json({
-      status: "failed",
-      message: err
-    })
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
   }
-};
 
-exports.getUser = async (req, res) => {
-  try{
+  const selectedChapter = user.books.find(title=> title.titleBook==='Radiology').chapters.find(title => title.titleChapter === '102');
 
-    const user = await User.findById(req.params.id);
+    console.log(selectedChapter.forms);
 
     res.status(200).json({
       status: "success",
@@ -30,98 +30,69 @@ exports.getUser = async (req, res) => {
         user
       }
     });
-  }catch (err){
-    res.status(404).json({
-      status: 'failed',
-      message: err.toString()
-    });
-  }
-};
 
-exports.createUser = async (req, res) => {
-  try{
-    const newU = new User({
-      firstName: "Valami",
-      lastName: "Szabo",
-      role: "user",
-      email: "illes2@email.com",
-      course: "Radiology",
-      books: [
-        {
-          titleBook: "Radiology",
-          chapters: [
-            {
-              titleChapter: "101",
-              forms: {
-                10101: "beiras",
-                10102: "masik beiras",
-                10103: "harmadik beiras"
-              }
-            },
-            {
-              titleChapter: "102",
-              forms: {
-                10201: "beiras",
-                10202: "masik beiras",
-                10203: "harmadik beiras"
-              }
-            }
-          ]
-        }
-      ]
-    });
+});
 
-    const newUser = await User.create(newU);
-    // const newUser = await User.create(req.body);
+exports.createUser = catchAsync(async (req, res, next) => {
+    // const newUser = await User.create(newU);
+    const newUser = await User.create(req.body);
     res.status(201).json({
       status: 'success',
       data: {
         user: newUser
       }
     });
-  }catch (err) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Invalid data sent'
-    })
+});
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
   }
-};
 
-exports.updateUser = async (req, res) => {
-  try {
-    const fin = req.params.id;
-    const update = req.body;
-    const user = await User.findByIdAndUpdate(fin, update, {
-      new: true,
-      runValidators: true
-    });
+  const selectedBook = user.books.find(title => title.titleBook === 'Radiology');
+  const selectedChapter = selectedBook.chapters.find(title => title.titleChapter === '101');
+  const bookIndex = 0;
+  const chapterIndex = 0;
 
-    console.log(user.chapters[0].forms.set('10102', 'javitott beiras'));
+    // const user3 = await User.findByIdAndUpdate({_id: req.params.id},
+    //   {["books." + bookIndex + ".chapters." + chapterIndex + ".forms.10101"]: "ez a megvaltoztatott szoveg"});
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        user
-      }
-    });
-  } catch (err){
-    res.status(404).json({
-      status: 'failed',
-      message: err
-    })
+    // req.body = {"books.obj.chapters.0.forms.10101": "minden"};
+    // console.log(req.body);
+
+    // const user2 = await User.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    //   runValidators: true
+    // });
+
+    // console.log(selectedChapter.forms.set('10102', 'javitott beiras'));
+    // console.log(selectedChapter.set('forms.10101', 'ez a javitott beiras'));
+
+  for (var i = 10101; i < 10105; i++) {
+    const modifiedForms = selectedChapter.set('forms.'+ formNumber, 'probaljuk ki');
+    await User.findByIdAndUpdate({_id: req.params.id},
+        {["books." + bookIndex + ".chapters." + chapterIndex]: [modifiedForms]}, {
+          new: true
+        });
+    }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+    }
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
   }
-};
 
-exports.deleteUser = async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    res.status(200).json({
+  res.status(200).json({
       status: "success"
     });
-  } catch (err){
-    res.status(404).json({
-      status: 'failed',
-      message: err
-    })
-  }
-};
+});
