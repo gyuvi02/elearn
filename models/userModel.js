@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
 	firstName: {
@@ -30,7 +31,15 @@ const userSchema = new mongoose.Schema({
 	},
 	passwordConfirm: {
 		type: String,
-		required: [true, 'Please confirm your password']
+		required: [true, 'Please confirm your password'],
+		validate: {
+			// This only works on CREATE and SAVE!!!
+			validator: function(el) {
+				return el === this.password;
+			},
+			message: 'Passwords are not the same!'
+		}
+
 	},
 	course: {
 		type: String,
@@ -47,15 +56,20 @@ const userSchema = new mongoose.Schema({
 	},
 	books: [
 		{ _id : false,
-			titleBook: String,
+			titleBook: {
+				type: String,
+				default: 'Radiology'},
 			coverBook: String,
 			chapters: [
 				{
 					_id : false,
-					titleChapter: String,
+					titleChapter: {
+						type: String,
+						default: '101'},
 					forms: {
 						type: Map,
-						of: String
+						of: String,
+						default: {"10101": "Proba"},
 					}
 				}
 			]
@@ -63,11 +77,21 @@ const userSchema = new mongoose.Schema({
 	]
 });
 
-userSchema.pre(/^find/, function(next) {
-	this.loginTime = Date.now();
+userSchema.pre('save', async function(next) {
+	if (!this.isModified('password')) return next();
+	this.password = await bcrypt.hash(this.password, 12);
+	this.passwordConfirm = undefined;
 	next();
 })
 
+userSchema.pre(/^find/, function (next) {
+	this.loginTime = Date.now();
+	next();
+});
+
+userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+	return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -71,12 +71,12 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     // console.log(selectedChapter.set('forms.10101', 'ez a javitott beiras'));
 
   for (var i = 10101; i < 10105; i++) {
-    const modifiedForms = selectedChapter.set('forms.'+ formNumber, 'probaljuk ki');
+    const modifiedForms = selectedChapter.set('forms.' + i, 'probaljuk ki');
     await User.findByIdAndUpdate({_id: req.params.id},
-        {["books." + bookIndex + ".chapters." + chapterIndex]: [modifiedForms]}, {
-          new: true
-        });
-    }
+      {["books." + bookIndex + ".chapters." + chapterIndex]: [modifiedForms]}, {
+        new: true
+      });
+  }
 
   res.status(200).json({
     status: "success",
