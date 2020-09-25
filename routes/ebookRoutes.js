@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const ebookController = require('./../controllers/ebookController');
+const authController = require('./../controllers/authController');
 
 // router.param('id', ebookController.checkID); //we could check the ID of the ebooks
 
 router.route('/')
-    .get(ebookController.getAllEbooks)
+    .get(authController.protect, ebookController.getAllEbooks)
     .post(ebookController.createEbook);
 
 router.route('/:id')

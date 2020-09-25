@@ -52,7 +52,8 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   }
 
   const selectedBook = user.books.find(title => title.titleBook === 'Radiology');
-  const selectedChapter = selectedBook.chapters.find(title => title.titleChapter === '101');
+  // const selectedChapter = selectedBook.chapters.find(title => title.titleChapter === '101');
+  const selectedChapter = selectedBook.chapters[0]; //this works when I've just created the user, and in the chapters array there is only one, empty chapter
   const bookIndex = 0;
   const chapterIndex = 0;
 
