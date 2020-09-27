@@ -2,29 +2,6 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const Schema = require("mongoose");
-
-// const chapterSchema = new mongoose.Schema({
-// 	chapterTitel: String,
-// 	chapter: [
-// 		{
-// 			forms: {
-// 				type: Map,
-// 				of: String,
-// 				default: {"10101": "Proba"}
-// 			}
-// 		}
-// 	]
-// });
-//
-// const bookSchema = new mongoose.Schema({
-// 	titleBook: String,
-// 	bookCover: String,
-// 	chapter: {
-// 		type: Schema.Types.ObjectId,
-// 		ref: 'Chapter'
-// 	}
-// });
 
 const userSchema = new mongoose.Schema({
 	firstName: {
@@ -68,10 +45,10 @@ const userSchema = new mongoose.Schema({
 	passwordChangedAt: Date,
 	passwordResetToken: String,
 	passwordResetExpires: Date,
-	course: {
-		type: String,
-		required: true
-	},
+	courses: [{
+		type: mongoose.Schema.ObjectId,
+		ref: 'Ebook'
+	}],
 	createdAt: {
 		type: Date,
 		default: Date.now()
@@ -85,7 +62,6 @@ const userSchema = new mongoose.Schema({
 	// 	type: Schema.Types.ObjectId,
 	// 	ref: 'Book'
 	// }
-
 
 	books: [
 		{ _id : false,
@@ -147,12 +123,7 @@ userSchema.methods.createPasswordResetToken = function() {
 	return resetToken;
 };
 
-
 const User = mongoose.model('User', userSchema);
-// const Book = mongoose.model('Book', bookSchema);
-// const Chapter = mongoose.model('Chapter', chapterSchema);
 
 module.exports = User;
-// module.exports = Book;
-// module.exports = Chapter;
 

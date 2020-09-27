@@ -1,25 +1,37 @@
+const catchAsync = require('./../utils/catchAsync');
+const Ebook = require('./../models/ebookModel')
+const factory = require('./../controllers/handlerFactory');
 
-
-exports.getAllEbooks = (req, res) => {
+exports.getUserEbooks = catchAsync(async (req, res) => {
+    const ebook = await Ebook.find({_id: req.user.courses}).select('titleBook');
     res
         .status(200)
-        .json({message: `Request date for all ebooks is ${req.requestTime.toLocaleDateString()}, ${req.requestTime.toLocaleTimeString()}`})
-};
+        .json({
+            message: `Request date for the ebooks of ${req.user.firstName} is ${req.requestTime.toLocaleDateString()}, ${req.requestTime.toLocaleTimeString()}`,
+            data: {
+                ebook
+            }
+        })
+});
 
 exports.getEbook = (req, res) => {
     res
         .status(200)
         .json({
             status: "success",
-            data: req.params.id
+            data: req.body
         })
 };
 
-exports.createEbook = (req, res) => {
-    res.status(201);
-    console.log(req.body);
-    res.send(req.body)
-};
+exports.createEbook = catchAsync (async (req, res) => {
+    const newEbook = await Ebook.create(req.body);
+    res.status(201).json({
+        status: 'success',
+          data: {
+            user: newEbook
+        }
+    });
+});
 
 exports.updateEbook = (req, res) => {
     res.status(200).json({
@@ -28,8 +40,4 @@ exports.updateEbook = (req, res) => {
     })
 };
 
-exports.deleteEbook = (req, res) => {
-    res.status(204).json({
-        status: 'success',
-    })
-};
+exports.deleteEbook = factory.deleteOne(Ebook);

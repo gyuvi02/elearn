@@ -2,7 +2,7 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require("../utils/appError");
 const createSendToken = require('./../utils/createSendToken');
-
+const factory = require('./../controllers/handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -13,7 +13,10 @@ const filterObj = (obj, ...allowedFields) => {
 }
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const users = await User.find();
+    const users = await User.find().populate({
+      path: 'courses',
+      select: {'__v': 0, '_id': 0, 'chapters': 0, 'coverPhoto': 0}
+    });
 
     res.status(200).json({
       status: 'success',
@@ -43,15 +46,18 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
 
 exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).populate({
+      path: 'courses',
+      select: {'__v': 0, '_id': 0, 'chapters': 0}
+  });
 
   if (!user) {
     return next(new AppError('No user found with that ID', 404));
   }
 
-  const selectedChapter = user.books.find(title=> title.titleBook==='Radiology').chapters.find(title => title.titleChapter === '102');
+  // const selectedChapter = user.books.find(title=> title.titleBook==='Radiology').chapters.find(title => title.titleChapter === '102');
 
-    console.log(selectedChapter.forms);
+    // console.log(selectedChapter.forms);
 
     res.status(200).json({
       status: "success",
@@ -62,7 +68,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
     });
 
 });
-
+//We use authController.signup instead
 exports.createUser = catchAsync(async (req, res, next) => {
     // const newUser = await User.create(newU);
     const newUser = await User.create(req.body);
@@ -116,14 +122,16 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
-    const user = await User.findByIdAndDelete(req.params.id);
+exports.deleteUser = factory.deleteOne(User);
 
-  if (!user) {
-    return next(new AppError('No user found with that ID', 404));
-  }
-
-  res.status(200).json({
-      status: "success"
-    });
-});
+// exports.deleteUser = catchAsync(async (req, res, next) => {
+//     const user = await User.findByIdAndDelete(req.params.id);
+//
+//   if (!user) {
+//     return next(new AppError('No user found with that ID', 404));
+//   }
+//
+//   res.status(200).json({
+//       status: "success"
+//     });
+// });

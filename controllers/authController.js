@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const pseudoSave = require('./../utils/pseudoSave');
 const createSendToken = require('./../utils/createSendToken');
+// const signToken = require('./../utils/createSendToken');
 // const Book = require("../models/userModel");
 
 exports.signUp = catchAsync(async (req, res, next) => {
@@ -18,7 +19,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		email: req.body.email,
-		course: req.body.course,
+		courses: req.body.courses,
 		password: req.body.password,
 		passwordConfirm: req.body.passwordConfirm,
 		books: [{titleBook: req.body.books.titleBook, chapters:[{titleChapter: "", forms:{}}]}]
@@ -58,7 +59,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 		token = req.headers.authorization.split(' ')[1]
 	}
 	if (!token) {
-		console.log(token);
 		return next(new AppError('Your are not logged in. Please log in to get access.', 401));
 	}
 	//Token verification
@@ -179,11 +179,11 @@ exports.updatePassword = async (req, res, next) => {
 		createSendToken(user, 200, res);
 
 	} else {
-		const token = signToken(user._id);
+		const token = signToken(req.user.id);
 		res.status(400).json({
 			status: 'fail',
 			message: 'The passwords are different',
-			token,
+			token
 		});
 	}
 };
