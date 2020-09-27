@@ -2,6 +2,29 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const Schema = require("mongoose");
+
+// const chapterSchema = new mongoose.Schema({
+// 	chapterTitel: String,
+// 	chapter: [
+// 		{
+// 			forms: {
+// 				type: Map,
+// 				of: String,
+// 				default: {"10101": "Proba"}
+// 			}
+// 		}
+// 	]
+// });
+//
+// const bookSchema = new mongoose.Schema({
+// 	titleBook: String,
+// 	bookCover: String,
+// 	chapter: {
+// 		type: Schema.Types.ObjectId,
+// 		ref: 'Chapter'
+// 	}
+// });
 
 const userSchema = new mongoose.Schema({
 	firstName: {
@@ -33,14 +56,14 @@ const userSchema = new mongoose.Schema({
 	},
 	passwordConfirm: {
 		type: String,
-		required: [true, 'Please confirm your password'],
-		validate: {
-			// This only works on CREATE and SAVE!!!
-			validator: function(el) {
-				return el === this.password;
-			},
-			message: 'Passwords are not the same!'
-		}
+		required: [true, 'Please confirm your password']
+		// validate: {
+		// 	// This only works on CREATE and SAVE!!!
+		// 	validator: function(el) {
+		// 		return el === this.password;
+		// 	},
+		// 	message: 'Passwords are not the same!'
+		// }
 	},
 	passwordChangedAt: Date,
 	passwordResetToken: String,
@@ -58,6 +81,12 @@ const userSchema = new mongoose.Schema({
 		// type: Map,
 		// of: Number
 	},
+	// books: {
+	// 	type: Schema.Types.ObjectId,
+	// 	ref: 'Book'
+	// }
+
+
 	books: [
 		{ _id : false,
 			titleBook: {
@@ -107,7 +136,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
 
 userSchema.methods.createPasswordResetToken = function() {
 	const resetToken = crypto.randomBytes(32).toString('hex');
- 
+
 	this.passwordResetToken = crypto
 		.createHash('sha256')
 		.update(resetToken)
@@ -120,5 +149,10 @@ userSchema.methods.createPasswordResetToken = function() {
 
 
 const User = mongoose.model('User', userSchema);
+// const Book = mongoose.model('Book', bookSchema);
+// const Chapter = mongoose.model('Chapter', chapterSchema);
+
 module.exports = User;
+// module.exports = Book;
+// module.exports = Chapter;
 

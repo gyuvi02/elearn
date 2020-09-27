@@ -6,15 +6,14 @@ const AppError = require("../utils/appError");
 const sendEmail = require('./../utils/email');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-
-const signToken = id => {
-	return jwt.sign({ id }, process.env.JWT_SECRET,
-		{ expiresIn: process.env.JWT_EXPIRES_IN });
-};
+const pseudoSave = require('./../utils/pseudoSave');
+const createSendToken = require('./../utils/createSendToken');
+// const Book = require("../models/userModel");
 
 exports.signUp = catchAsync(async (req, res, next) => {
-	// const newUser = await User.create(req.body);
-	console.log(req.body.books);
+	// const newBook = await Book.create({
+	// 	titleBook: req.body.titleBook
+	// });
 	const newUser = await User.create({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
@@ -23,20 +22,12 @@ exports.signUp = catchAsync(async (req, res, next) => {
 		password: req.body.password,
 		passwordConfirm: req.body.passwordConfirm,
 		books: [{titleBook: req.body.books.titleBook, chapters:[{titleChapter: "", forms:{}}]}]
+		// books: newBook
 	});
 
 	//We can add a new method here that downloads the chapters and the empty forms for the book: req.body.books.titleBook and upload them to the user's document
 
-	const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET,
-		{ expiresIn: process.env.JWT_EXPIRES_IN });
-
-	res.status(201).json({
-		status: 'success',
-		token,
-		data: {
-			user: newUser
-		}
-	})
+	createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -50,12 +41,14 @@ exports.login = catchAsync(async (req, res, next) => {
 	if (!user || !(await user.correctPassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 401))
 	}
-	token = signToken(user._id);
+	createSendToken(user, 200, res);
 
-	res.status(200).json({
-		status: 'success',
-		token
-	});
+	// token = signToken(user._id);
+	//
+	// res.status(200).json({
+	// 	status: 'success',
+	// 	token
+	// });
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -142,29 +135,58 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 	if (!user) {
 		return next(new AppError('Token is invalid or expired!', 400));
 	}
-	// user.password = req.body.password;
-	// user.passwordConfirm = req.body.passwordConfirm;
-	console.log(user.password);
-	if (req.body.password === req.body.passwordConfirm) {
-		user.password = await bcrypt.hash(req.body.password, 12);
-		user.passwordConfirm = undefined;
+	user.password = req.body.password;
+	user.passwordConfirm = req.body.passwordConfirm;
+	if (user.isModified('password') && user.password === user.passwordConfirm) { //it would be nice to use a pre save hook here, but I cannot use .save at all, so...
+		await pseudoSave(user);
+
+		// user.password = await bcrypt.hash(user.password, 12);
+		// user.passwordChangedAt = Date.now() - 1000;
+		// user.passwordConfirm = undefined;
+		// user.passwordResetToken = undefined;
+		// user.passwordResetExpires = undefined;
+		//
+		// await User.findByIdAndUpdate(user.id, user);
+		// await User.updateOne({email: user.email}, {passwordResetExpires: user.passwordResetExpires,
+		// 	passwordResetToken: user.passwordResetToken,
+		// 	passwordConfirm: user.passwordConfirm});
+		res.status(200).json({
+			status: 'success',
+			message: 'Password was modified'
+		});
+
+	}else {
+		res.status(400).json({
+			status: 'fail',
+			message: 'Password was not modified'
+		});
 	}
-	console.log(user.password);
-	user.passwordResetToken = undefined;
-	user.passwordResetExpires = undefined;
-
-	await User.findByIdAndUpdate(user.id, user);
-	await User.updateOne({email: user.email}, {passwordResetExpires: user.passwordResetExpires,
-			passwordResetToken: user.passwordResetToken,
-			passwordConfirm: user.passwordConfirm});
-
-	res.status(200).json({
-		status: 'success',
-		message: 'Password modified'
-	});
-
 });
 
+exports.updatePassword = async (req, res, next) => {
+	//Get user from collection
+	const user = await User.findById(req.user.id).select('+password');
+
+	//Check if POST-ed current password is correct
+	if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+		return next(new AppError('Your current password is wrong', 401));
+	}
+	//Update the password
+	if (req.body.password === req.body.passwordConfirm) {
+		user.password = req.body.password;
+		user.passwordConfirm = req.body.passwordConfirm;
+		await pseudoSave(user); //as I cannot use .save, I created this method
+		createSendToken(user, 200, res);
+
+	} else {
+		const token = signToken(user._id);
+		res.status(400).json({
+			status: 'fail',
+			message: 'The passwords are different',
+			token,
+		});
+	}
+};
 
 
 

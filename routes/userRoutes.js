@@ -6,6 +6,8 @@ const authController = require('./../controllers/authController');
 
 router.post('/signup', authController.signUp,);
 router.post('/login', authController.login);
+router.patch('/updatemypassword', authController.protect, authController.updatePassword);
+router.patch('/updateme', authController.protect, userController.updateMe);
 
 router.route('/')
     .get(userController.getAllUsers)
