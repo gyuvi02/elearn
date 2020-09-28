@@ -10,6 +10,13 @@ const filterObj = (obj, ...allowedFields) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   })
   return newObj;
+};
+
+exports.deleteUser = factory.deleteOne(User);
+exports.getUser = factory.getOne(User, {path: 'courses', select: {'__v': 0, '_id': 0, 'chapters': 0}});
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
 }
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
@@ -45,29 +52,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id).populate({
-      path: 'courses',
-      select: {'__v': 0, '_id': 0, 'chapters': 0}
-  });
-
-  if (!user) {
-    return next(new AppError('No user found with that ID', 404));
-  }
-
-  // const selectedChapter = user.books.find(title=> title.titleBook==='Radiology').chapters.find(title => title.titleChapter === '102');
-
-    // console.log(selectedChapter.forms);
-
-    res.status(200).json({
-      status: "success",
-      data: {
-
-        user
-      }
-    });
-
-});
 //We use authController.signup instead
 exports.createUser = catchAsync(async (req, res, next) => {
     // const newUser = await User.create(newU);
@@ -122,16 +106,4 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteUser = factory.deleteOne(User);
 
-// exports.deleteUser = catchAsync(async (req, res, next) => {
-//     const user = await User.findByIdAndDelete(req.params.id);
-//
-//   if (!user) {
-//     return next(new AppError('No user found with that ID', 404));
-//   }
-//
-//   res.status(200).json({
-//       status: "success"
-//     });
-// });

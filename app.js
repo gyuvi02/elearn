@@ -1,6 +1,6 @@
 // var createError = require('http-errors');
-var express = require('express');
-// var path = require('path');
+const express = require('express');
+const path = require('path');
 // var cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -17,7 +17,12 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 //GLOBAL MIDDLEWARES
+app.use(express.static(path.join(`${__dirname}/public`)));
+
 app.use(helmet());
 
 if (process.env.NODE_ENV === 'development') {
@@ -41,7 +46,6 @@ app.use(hpp({
   whitelist: ['duration']
 }));
 
-app.use(express.static(`${__dirname}/public`));
 
 //add a date to every request - probably they already have one
 app.use((req, res, next) => {
@@ -50,6 +54,14 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
+app.get('/', (req, res) => {
+  res.status(200).render('index', {
+    ebook: 'Radiology',
+    user: 'Gyula'
+  });
+});
+
+
 app.use('/api/v1/ebooks', ebookRouter);
 app.use('/api/v1/users', userRouter);
 

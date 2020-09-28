@@ -2,6 +2,9 @@ const catchAsync = require('./../utils/catchAsync');
 const Ebook = require('./../models/ebookModel')
 const factory = require('./../controllers/handlerFactory');
 
+exports.getEbook = factory.getOne(Ebook);
+exports.deleteEbook = factory.deleteOne(Ebook);
+
 exports.getUserEbooks = catchAsync(async (req, res) => {
     const ebook = await Ebook.find({_id: req.user.courses}).select('titleBook');
     res
@@ -13,15 +16,6 @@ exports.getUserEbooks = catchAsync(async (req, res) => {
             }
         })
 });
-
-exports.getEbook = (req, res) => {
-    res
-        .status(200)
-        .json({
-            status: "success",
-            data: req.body
-        })
-};
 
 exports.createEbook = catchAsync (async (req, res) => {
     const newEbook = await Ebook.create(req.body);
@@ -40,4 +34,3 @@ exports.updateEbook = (req, res) => {
     })
 };
 
-exports.deleteEbook = factory.deleteOne(Ebook);

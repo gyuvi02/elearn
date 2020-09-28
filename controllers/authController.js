@@ -12,9 +12,6 @@ const createSendToken = require('./../utils/createSendToken');
 // const Book = require("../models/userModel");
 
 exports.signUp = catchAsync(async (req, res, next) => {
-	// const newBook = await Book.create({
-	// 	titleBook: req.body.titleBook
-	// });
 	const newUser = await User.create({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
@@ -23,10 +20,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
 		password: req.body.password,
 		passwordConfirm: req.body.passwordConfirm,
 		books: [{titleBook: req.body.books.titleBook, chapters:[{titleChapter: "", forms:{}}]}]
-		// books: newBook
 	});
 
-	//We can add a new method here that downloads the chapters and the empty forms for the book: req.body.books.titleBook and upload them to the user's document
+	//We can add a new method here that downloads the chapters and the empty forms for the book: req.body.courses.titleBook and upload them to the user's document
 
 	createSendToken(newUser, 201, res);
 });
