@@ -11,6 +11,7 @@ const hpp = require('hpp');
 
 const ebookRouter = require('./routes/ebookRoutes');
 const userRouter = require('./routes/userRoutes');
+const viewRouter = require('./routes/viewRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -54,14 +55,7 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
-app.get('/', (req, res) => {
-  res.status(200).render('index', {
-    ebook: 'Radiology',
-    user: 'Gyula'
-  });
-});
-
-
+app.use('/', viewRouter);
 app.use('/api/v1/ebooks', ebookRouter);
 app.use('/api/v1/users', userRouter);
 
