@@ -7,12 +7,14 @@ header#header.clear
     nav
         ul
             li
-                a Today: #{datetime}
-
-            li
                 button.button2
                     span Help
-            li
-                button.button
+            li.last
+                a.header-button(href='/login')
+                    span
+                        | Login
+                //a(class='.header-button' href='/login' role='button')
+
+                //button.header-button
                     span Login
 

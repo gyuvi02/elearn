@@ -4,23 +4,27 @@
         nav
             a(href='#') Forgot your password?
     // Section Two
-    section.one_quarter
+    section.two_quarter
         nav
             a(href='#') Need help?
     // Section Three
-    section.one_quarter
+    section.three_quarter
         nav
             a(href='#') Contact us
     // Section Four
-    section.one_quarter.lastbox
+    section.four_quarter
         nav
             a(href='#') Lorem ipsum dolor sit
-    // / Section
+    // Section Five
+    section.five_quarter
+        nav
+            a Today is
+            |
+            a.span= datetime.toLocaleString('en-us', {month: 'long', day: 'numeric', year: 'numeric'})
+
 // Copyright
-.wrapper2.row4
+.wrapper.row4
     footer#copyright.clear
-        p.fl_left
-            | Copyright &copy; 2020 - All Rights Reserved -
-            a(href='#')  ebookstolearn.org
+        a.Copyright &copy; 2020 - All Rights Reserved - ebookstolearn.org
         //- p.fl_right
         //-    | Template by OS Templates

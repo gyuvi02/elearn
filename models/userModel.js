@@ -58,11 +58,6 @@ const userSchema = new mongoose.Schema({
 		// type: Map,
 		// of: Number
 	},
-	// books: {
-	// 	type: Schema.Types.ObjectId,
-	// 	ref: 'Book'
-	// }
-
 	books: [
 		{ _id : false,
 			titleBook: {

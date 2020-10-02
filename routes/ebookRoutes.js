@@ -4,6 +4,8 @@ const ebookController = require('./../controllers/ebookController');
 const authController = require('./../controllers/authController');
 
 // router.param('id', ebookController.checkID); //we could check the ID of the ebooks
+router.route('/:id').get(ebookController.getEbook);
+
 router.use(authController.protect);
 
 router.route('/')
@@ -13,7 +15,6 @@ router.route('/')
 router.use(authController.restrictTo('admin', 'teacher'));
 
 router.route('/:id')
-    .get(ebookController.getEbook)
     .patch(ebookController.updateEbook)
     .delete(ebookController.deleteEbook);
 

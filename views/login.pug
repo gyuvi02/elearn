@@ -1,4 +1,33 @@
 extends index
 
 block content
-    h1 This will be the login page
+    doctype html
+    head
+        title Login V1
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        link(rel='icon' type='image/png' href='images/favicon.ico')
+        link(rel='stylesheet' type='text/css' href='stylesheets/layout.css')
+    .login-limiter
+            .wrap-login
+                .login-pic.js-tilt(data-tilt='')
+                    img(src='images/img-01.png' alt='IMG')
+                form.login-form.validate-form
+                    span.login-form-title
+                        | Login into your account
+                    .wrap-input.validate-input(data-validate='Valid email is required: ex@abc.xyz')
+                        input.login-input(type='text' name='email' placeholder='Email')
+                    .wrap-input.validate-input(data-validate='Password is required')
+                        input.login-input(type='password' name='pass' placeholder='Password')
+                    .container-login-btn
+                        button.login-btn
+                            | Login
+
+                    //.text-center.p-t-12
+                    //    span.login-txt1
+                    //        | Forgot Password?
+                    //button.button-forgot
+                    //    | Forgot password?
+                    a(href='#') Forgot password?
+
+    script(src='js/main.js')

@@ -11,6 +11,7 @@ const router = express.Router();
 // });
 
 router.get('/', viewsController.getOverview);
+router.get('/ebooks/:id', viewsController.getEbook);
 router.get('/login', viewsController.getLogin);
 
 

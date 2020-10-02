@@ -7,6 +7,7 @@ const ebookSchema = new mongoose.Schema({
 		type: String,
 		unique: true
 	},
+	summaryEbook: String,
 	chapters:{
 		type: String,
 		required: true,

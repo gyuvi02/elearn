@@ -1,18 +1,33 @@
 const catchAsync = require('../utils/catchAsync');
+const User = require("../models/userModel");
 
-exports.getOverview = (req, res, next) => {
+exports.getOverview = catchAsync(async (req, res, next) => {
+	const users = await User.find();
 	const dt = new Date();
-	const d2 = `${dt.getFullYear()}. ${dt.getMonth()+1}. ${dt.getDate()}.`;
+	// const d2 = `${dt.getMonth()+1}. ${dt.getDate()}. ${dt.getFullYear()}. `;
 	// const d2 = dt.toLocaleDateString();
 	res.status(200).render('overview', {
 		title: 'ebookstolearn.org',
-		datetime: d2
+		datetime: dt,
+		users
+	});
+});
+
+exports.getLogin = (req, res, next) => {
+	const dt = new Date();
+
+	res.status(200).render('login', {
+		title: 'Login',
+		datetime: dt
 	});
 };
 
-exports.getLogin = (req, res, next) => {
+exports.getEbook = (req, res, next) => {
+	const dt = new Date();
+
 	res.status(200).render('login', {
-		title: 'Login'
+		title: 'Ebook',
+		datetime: dt
 	});
 };
 
