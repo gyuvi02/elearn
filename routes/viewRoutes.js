@@ -1,5 +1,6 @@
 const express = require('express');
 const viewsController = require('./../controllers/viewsController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -9,10 +10,11 @@ const router = express.Router();
 // 		user: 'Gyula'
 // 	});
 // });
+router.use(authController.isLoggedIn);
 
 router.get('/', viewsController.getOverview);
 router.get('/ebooks/:id', viewsController.getEbook);
-router.get('/login', viewsController.getLogin);
+router.get('/login', viewsController.getLoginForm);
 
 
 module.exports = router;

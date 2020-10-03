@@ -2,18 +2,16 @@ const catchAsync = require('../utils/catchAsync');
 const User = require("../models/userModel");
 
 exports.getOverview = catchAsync(async (req, res, next) => {
-	const users = await User.find();
+	// const users = await User.find();
 	const dt = new Date();
-	// const d2 = `${dt.getMonth()+1}. ${dt.getDate()}. ${dt.getFullYear()}. `;
-	// const d2 = dt.toLocaleDateString();
 	res.status(200).render('overview', {
 		title: 'ebookstolearn.org',
 		datetime: dt,
-		users
+		// users
 	});
 });
 
-exports.getLogin = (req, res, next) => {
+exports.getLoginForm = (req, res) => {
 	const dt = new Date();
 
 	res.status(200).render('login', {
@@ -22,7 +20,7 @@ exports.getLogin = (req, res, next) => {
 	});
 };
 
-exports.getEbook = (req, res, next) => {
+exports.getEbook = (req, res) => {
 	const dt = new Date();
 
 	res.status(200).render('login', {

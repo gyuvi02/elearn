@@ -27,5 +27,8 @@
     "pug": "^3.0.0",
     "validator": "^13.1.17",
     "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "axios": "^0.20.0"
   }
 }

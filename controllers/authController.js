@@ -16,10 +16,11 @@ exports.signUp = catchAsync(async (req, res, next) => {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		email: req.body.email,
-		courses: req.body.courses,
+		courses: [], //we just create an empty array and add the courses later
 		password: req.body.password,
 		passwordConfirm: req.body.passwordConfirm,
-		books: [{titleBook: req.body.books.titleBook, chapters:[{titleChapter: "", forms:{}}]}]
+		books: [{titleBook: req.body.books.titleBook, chapters:[{titleChapter: "", forms:{}}]}],
+		courseParticipants: [] //we just create an empty array and add the courses later
 	});
 
 	//We can add a new method here that downloads the chapters and the empty forms for the book: req.body.courses.titleBook and upload them to the user's document
@@ -53,7 +54,10 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 		token = req.headers.authorization.split(' ')[1]
+	}else if (req.cookies.jwt){
+		token = req.cookies.jwt;
 	}
+
 	if (!token) {
 		return next(new AppError('Your are not logged in. Please log in to get access.', 401));
 	}
@@ -73,6 +77,27 @@ exports.protect = catchAsync(async (req, res, next) => {
 	req.user = currentUser;
 	next();
 });
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+	if (req.cookies.jwt) {
+		const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+
+		//Checking if the user still exists
+		const currentUser = await User.findById(decoded.id);
+		if (!currentUser) {
+			return next();
+		}
+
+		//Checking if the password was changed in the meantime
+		if (currentUser.changedPasswordAfter(decoded.iat)) {
+			return next();
+		}
+		res.locals.user = currentUser;
+		return next();
+	}
+	next();
+});
+
 
 exports.restrictTo = (...roles) => {
 	return (req, res, next) => {

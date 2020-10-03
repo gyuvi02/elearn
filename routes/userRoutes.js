@@ -29,4 +29,7 @@ router.route('/:id')
 	.patch(authController.restrictTo('admin'), userController.updateUser)
 	.delete(authController.restrictTo('admin'), userController.deleteUser);
 
+router.route('/:id/:ebook') //the teachers id, could be /me? ebook technically means course
+	.patch(authController.restrictTo('admin', 'teacher'), userController.addCourse) //we add new courses and students to the new courses
+
 module.exports = router;

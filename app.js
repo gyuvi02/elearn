@@ -1,7 +1,7 @@
 // var createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-// var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -37,6 +37,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 app.use(express.json({limit: '10kb'}));
+app.use(cookieParser());
 
 app.use(mongoSanitize());
 
@@ -47,12 +48,20 @@ app.use(hpp({
   whitelist: ['duration']
 }));
 
-
-//add a date to every request - probably they already have one
 app.use((req, res, next) => {
-  req.requestTime = new Date();
+  req.requestTime = new Date().toISOString();
+  // console.log(req.cookies);
   next();
 });
+
+//
+//
+// //add a date to every request - probably they already have one
+// app.use((req, res, next) => {
+//   req.requestTime = new Date();
+//   // console.log(req.cookies);
+//   next();
+// });
 
 //ROUTES
 app.use('/', viewRouter);

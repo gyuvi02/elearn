@@ -49,6 +49,16 @@ const userSchema = new mongoose.Schema({
 		type: mongoose.Schema.ObjectId,
 		ref: 'Ebook'
 	}],
+	courseParticipants: [{
+		_id: false,
+		courseName: {
+			type: String,
+			},
+			participants: [{
+				_id: false,
+				type: String
+			}],
+	}],
 	createdAt: {
 		type: Date,
 		default: Date.now()
@@ -62,18 +72,17 @@ const userSchema = new mongoose.Schema({
 		{ _id : false,
 			titleBook: {
 				type: String,
-				default: 'Radiology'},
+			},
 			coverBook: String,
 			chapters: [
 				{
 					_id : false,
 					titleChapter: {
 						type: String,
-						default: '101'},
+						},
 					forms: {
 						type: Map,
 						of: String,
-						default: {"10101": "Proba"},
 					}
 				}
 			]

@@ -1,20 +1,38 @@
 header#header.clear
     #hgroup
         h1
-            a(href='#') EbooksToLearn.org
+            a(href='#') EbooksForLearning.org
         h2 Ebooks for university courses
 
     nav
-        ul
-            li
-                button.button2
-                    span Help
-            li.last
-                a.header-button(href='/login')
-                    span
-                        | Login
-                //a(class='.header-button' href='/login' role='button')
+        if user
+            ul
+                li
+                    a.button.header-button span Log out
+                    a.header(href='/me')
+                        img.nav__user-img(src=`/img/users/${user.photo}` alt=`Photo of ${user.name}`)
+                        span= user.firstName
+        else
+            ul
+                li
+                    a.header-date.span= datetime.toLocaleString('en-us', {month: 'long', day: 'numeric', year: 'numeric'})
+                    a.button.header-button
+                        span Help
+                    a.header-button(href='/login')
+                        span Login
 
-                //button.header-button
-                    span Login
+
+
+
+    //
+    //        li.last
+    //            a.nav__el(href='#')
+    //                img.nav__user-img(src=`images/users/${user.photo}` alt=`Photo of ${user.firstName}`)
+    //                //img.header.im(src=`/images/users/${user.photo}.jpg` alt=`Photo of user ${user.firstName}`)
+    //                  span= user.firstName
+    //
+    //            //a(class='.header-button' href='/login' role='button')
+    //
+    //            //button.header-button
+    //                span Login
 
