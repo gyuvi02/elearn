@@ -71,7 +71,7 @@ input, textarea, select{font-size:12px; font-family:Georgia, serif;}
 
 /*----------------------------------------------Header-------------------------------------*/
 
-#header{padding:20px 0;}
+#header{height: 100px; padding-top: 15px;}
 
 #header #hgroup{float:left; margin:0;}
 #header #hgroup h1, #header #hgroup h2{font-weight:bold; font-style:normal; text-transform:none;}
@@ -144,8 +144,11 @@ input, textarea, select{font-size:12px; font-family:Georgia, serif;}
     transition: all 0.5s;
     cursor: pointer;
     border: solid #e6810e;
-
 }
+
+/*.header-logout-button{*/
+
+/*}*/
 
 .button2 {
     font-family: Georgia, serif;
@@ -188,6 +191,7 @@ input, textarea, select{font-size:12px; font-family:Georgia, serif;}
     opacity: 1;
     right: 0;
 }
+
 .header-date.span{
     padding: 5px 11px 5px 11px;;
     margin-right: 20px;
@@ -196,7 +200,11 @@ input, textarea, select{font-size:12px; font-family:Georgia, serif;}
     cursor: default;
 }
 
-.header-date.span:hover {
+.nav__user-img {
+    height: 2.8rem;
+    width: 2.8rem;
+    border-radius: 50%;
+    margin-right: 30px;
 }
 
 /*----------------------------------------Login page--------------------------------------------*/
@@ -341,4 +349,65 @@ input, textarea, select{font-size:12px; font-family:Georgia, serif;}
   margin-right: 1rem;
 }
 
+/*--------------------------------------- ALERT ---------------------------------------*/
+.alert {
+    position: fixed;
+    margin-top: 120px;
+    top: 0;
+    width: fit-content;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 9999;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    padding: 20px 20px;
+    -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+.alert--success {
+    background-color: #20bf6b;
+}
+.alert--error {
+    background-color: #f21b18;}
 
+.heading-secondary {
+    font-size: 2.25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            right top,
+            from(#7dd56f),
+            to(#28b487)
+    );
+    background-image: linear-gradient(to right, #7dd56f, #28b487);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: 0.1rem;
+    line-height: 1.3;
+    display: inline-block;
+}
+.heading-error {
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            right top,
+            from(#ff7730),
+            to(#eb4d4b)
+    );
+    background-image: linear-gradient(to right, #ff7730, #eb4d4b);
+    font-size: 3.5rem;
+}
+
+.error__msg {
+    font-size: 2.5rem;
+    font-weight: 700;
+    max-width: 50rem;
+    margin: 0 auto;
+}

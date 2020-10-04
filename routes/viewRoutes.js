@@ -13,7 +13,8 @@ const router = express.Router();
 router.use(authController.isLoggedIn);
 
 router.get('/', viewsController.getOverview);
-router.get('/ebooks/:id', viewsController.getEbook);
+router.get('/myEbooks',authController.protect, viewsController.getMyEbooks);
+router.get('/myEbooks/:id', authController.protect, viewsController.getOneEbook);
 router.get('/login', viewsController.getLoginForm);
 
 

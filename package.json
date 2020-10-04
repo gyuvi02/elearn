@@ -7,9 +7,12 @@
   "scripts": {
     "start": "nodemon server.js",
     "debug": "ndb server.js",
-    "start:prod": "SET NODE_ENV=production&&nodemon server.js"
+    "start:prod": "SET NODE_ENV=production&&nodemon server.js",
+    "watch:js": "parcel watch --hmr-port 8080 ./public/js/index.js  --out-dir ./public/js --out-file bundle.js --public-url /js",
+    "bundle:js": "parcel watch ./public/js/index.js  --out-dir ./public/js --out-file bundle.js --public-url /js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.11.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -18,6 +21,7 @@
     "express-mongo-sanitize": "^2.0.0",
     "express-rate-limit": "^5.1.3",
     "helmet": "^4.1.1",
+    "helmet-csp": "^3.1.0",
     "hpp": "^0.2.3",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
@@ -29,6 +33,8 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "axios": "^0.20.0"
+    "axios": "^0.20.0",
+    "node-forge": "^0.10.0",
+    "parcel-bundler": "^1.12.4"
   }
 }

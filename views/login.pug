@@ -1,18 +1,19 @@
 extends index
 
 block content
-    doctype html
-    head
-        title Login V1
-        meta(charset='UTF-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1')
-        link(rel='icon' type='image/png' href='images/favicon.ico')
-        link(rel='stylesheet' type='text/css' href='stylesheets/layout.css')
+    //doctype html
+    //head
+    //    title Login V1
+    //    meta(charset='UTF-8')
+    //    meta(name='viewport' content='width=device-width, initial-scale=1')
+    //    link(rel='icon' type='image/png' href='images/favicon.ico')
+    //    link(rel='stylesheet' type='text/css' href='stylesheets/layout.css')
+
     .login-limiter
             .wrap-login
-                .login-pic.js-tilt(data-tilt='')
-                    img(src='images/img-01.png' alt='IMG')
-                form.login-form.validate-form
+                .login-pic(data-tilt='')
+                    img(src='images/favicon.png' alt='IMG')
+                form.login-form
                     span.login-form-title
                         | Login into your account
                     .wrap-input.validate-input(data-validate='Valid email is required: ex@abc.xyz')
@@ -20,8 +21,7 @@ block content
                     .wrap-input.validate-input(data-validate='Password is required')
                         input#login-input-password(type='password' name='pass' placeholder='Password' required)
                     .container-login-btn
-                        button.login-btn
-                            | Login
+                    button.login-btn Login
 
                     //.text-center.p-t-12
                     //    span.login-txt1

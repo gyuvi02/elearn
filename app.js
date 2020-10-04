@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const csp = require('helmet-csp');
 
 const ebookRouter = require('./routes/ebookRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -25,6 +26,19 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(`${__dirname}/public`)));
 
 app.use(helmet());
+
+app.use(
+  csp({
+    directives: {
+      defaultSrc: ["'self'", "default.example"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      objectSrc: ["'none'"],
+      connectSrc: ["'self'", `ws://127.0.0.1:8080/`],
+      upgradeInsecureRequests: [],
+    },
+    reportOnly: false,
+  })
+);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
