@@ -4,21 +4,14 @@ const Ebook = require('../models/ebookModel');
 const AppError = require('../utils/appError');
 
 exports.getOverview = catchAsync(async (req, res, next) => {
-	// const users = await User.find();
-	const dt = new Date();
 	res.status(200).render('overview', {
-		title: 'ebookstolearn.org',
-		datetime: dt,
-		// users
+		title: 'ebooksForLearning'
 	});
 });
 
 exports.getLoginForm = (req, res) => {
-	const dt = new Date();
-
 	res.status(200).render('login', {
-		title: 'Login',
-		datetime: dt
+		title: 'Login'
 	});
 };
 
@@ -45,17 +38,27 @@ exports.getMyEbooks = catchAsync (async (req, res, next) => {
 
 exports.getOneEbook = catchAsync(async (req, res, next) => {
 	const title = req.params.id;
+	if (!title) {
+		return next(new AppError('There is no ebook with that title', 404))
+	}
 	// const actualBook = req.user.books.titleBook;
 	if (!req.user.books.some(x => x.titleBook === title)) {
-		console.log('You do not own that book!')
+		console.log('You do not own that book!');
 		return next(new AppError('There is no ebook with that title', 404));
 	} else{
-		console.log('You have that book!')
+		console.log('You have that book!');
 		res.status(200).render('ebook', {
-			title
+			title: 'Ebook'
 		});
 	}
 });
+
+exports.getAccount = (req, res) => {
+	console.log(req.user);
+	res.status(200).render('account', {
+		title: 'Your account'
+	});
+};
 
 
 

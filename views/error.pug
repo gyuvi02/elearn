@@ -1,6 +1,18 @@
 extends index
 
 block content
-  main.main
-    h2.heading-secondary.heading-error Uh oh! Something went wrong!
+  .wrap-error
+    h1#oops OOPS!
+    h2.heading-secondary Something went wrong here
+      br
+      .error__msg= code
+      br
       .error__msg= msg
+
+      //section.errormsg Content for  class &quot;errormsg&quot; Goes Here
+      a.button.button2(href='/')
+        span Back
+
+
+  //h2.heading-secondary.heading-error Uh oh! Something went wrong!
+    //  .error__msg= msg

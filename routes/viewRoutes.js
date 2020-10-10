@@ -10,12 +10,14 @@ const router = express.Router();
 // 		user: 'Gyula'
 // 	});
 // });
-router.use(authController.isLoggedIn);
 
-router.get('/', viewsController.getOverview);
-router.get('/myEbooks',authController.protect, viewsController.getMyEbooks);
-router.get('/myEbooks/:id', authController.protect, viewsController.getOneEbook);
-router.get('/login', viewsController.getLoginForm);
+router.get('/',authController.isLoggedIn, viewsController.getOverview);
+router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
+
+
+router.get('/my-ebooks',authController.protect, viewsController.getMyEbooks);
+router.get('/my-ebooks/:id', authController.protect, viewsController.getOneEbook);
+router.get('/me', authController.protect, viewsController.getAccount);
 
 
 module.exports = router;

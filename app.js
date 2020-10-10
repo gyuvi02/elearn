@@ -57,6 +57,8 @@ app.use(mongoSanitize());
 
 app.use(xss());
 
+app.locals.moment = require('moment');
+
 //Prevent parameter pollution
 app.use(hpp({
   whitelist: ['duration']

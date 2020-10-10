@@ -60,7 +60,6 @@ exports.logout = (req, res) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
 	let token;
-
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 		token = req.headers.authorization.split(' ')[1]
 	}else if (req.cookies.jwt){
@@ -83,7 +82,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	if (currentUser.changedPasswordAfter(decoded.iat)) {
 		return next(new AppError('User recently changed password! Please log in again!', 401));
 	}
-	req.user = currentUser;
+	res.locals.user = currentUser;
 	next();
 });
 
@@ -108,7 +107,6 @@ exports.isLoggedIn = async (req, res, next) => {
 			}
 
 			// THERE IS A LOGGED IN USER
-			res.locals.datetime = new Date();
 			res.locals.user = currentUser;
 			return next();
 		} catch (err) {

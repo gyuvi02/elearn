@@ -1,25 +1,27 @@
 header#header.clear
     #hgroup
         h1
-            a(href='#') EbooksForLearning.org
+            a(href='/') EbooksForLearning.org
         h2 Ebooks for university courses
 
     nav
         if user
             ul
                 li
-                    a.header-date.span= datetime.toLocaleString('en-us', {month: 'long', day: 'numeric', year: 'numeric'})
+                    a.header-date.span= moment(Date.now()).format('MMMM DD. YYYY')
                 li
                     a.header-button.header-logout-button Log out
                 li
-                    span= user.firstName
+                    a.header-button(href='/me')
+                        span= user.firstName
 
                 li
                     img.nav__user-img(src=`/images/users/${user.photo}` alt=`Photo of ${user.name}`)
         else
             ul
                 li
-                    a.header-date.span= datetime.toLocaleString('en-us', {month: 'long', day: 'numeric', year: 'numeric'})
+                    a.header-date.span= moment(Date.now()).format('MMMM DD. YYYY')
+
                     a.button.header-button
                         span Help
                     a.header-button(href='/login')
