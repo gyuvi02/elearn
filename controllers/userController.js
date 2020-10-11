@@ -18,7 +18,7 @@ exports.getUser = factory.getOne(User,
   {path: 'courses', select: {'__v': 0, '_id': 0, 'chapters': 0}});
 exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
-  console.log(req.params.id);
+  // console.log(req.params.id);
 
   next();
 }
@@ -43,7 +43,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     return next(new AppError('This route is not for password update. Please use /updatemypassword', 400));
   }
   //Update user document
-  const filteredBody = filterObj(req.body,'firstName', 'lastName', 'email');
+  console.log(`The req.body.firstname in updateMe is: ${req.body.firstName}`);
+  console.log(`The req.user.firstName in updateMe is: ${req.user.firstName}`);
+  const filteredBody = filterObj(req.body,'firstName', 'lastName', 'email', 'photo');
+  // if (req.file) filteredBody.photo = req.file.filename;
+
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {new: true, runValidators: true});
 
   createSendToken(updatedUser, 200, res);

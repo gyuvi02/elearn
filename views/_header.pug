@@ -24,9 +24,12 @@ header#header.clear
 
                     a.button.header-button
                         span Help
-                    a.header-button(href='/login')
-                        span Login
-
+                    if url==='/login'
+                        a.button.header-button(href='/')
+                            span Main
+                    else
+                        a.button.header-button(href='/login')
+                            span Login
 
 
 

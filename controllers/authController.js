@@ -82,7 +82,9 @@ exports.protect = catchAsync(async (req, res, next) => {
 	if (currentUser.changedPasswordAfter(decoded.iat)) {
 		return next(new AppError('User recently changed password! Please log in again!', 401));
 	}
+	req.user = currentUser;
 	res.locals.user = currentUser;
+	// console.log(`The req.user is: ${req.user}`);
 	next();
 });
 
@@ -137,7 +139,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	const resetToken = user.createPasswordResetToken();
 	await User.updateOne({email: req.body.email}, {passwordResetExpires: user.passwordResetExpires, passwordResetToken: user.passwordResetToken});
 	// await user.save({validateBeforeSave: false});
-	console.log(resetToken);
+	// console.log(resetToken);
 	const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
 	const message = `Forgot your password? Submit a PATCH request with your new password. To confirm your new password, go to: ${resetURL}\n
@@ -204,6 +206,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = async (req, res, next) => {
+	// console.log(`the req.body.password is: ${req.body.password}`);
 	//Get user from collection
 	const user = await User.findById(req.user.id).select('+password');
 
@@ -219,11 +222,11 @@ exports.updatePassword = async (req, res, next) => {
 		createSendToken(user, 200, res);
 
 	} else {
-		const token = signToken(req.user.id);
+		// const token = signToken(req.user.id);
 		res.status(400).json({
 			status: 'fail',
-			message: 'The passwords are different',
-			token
+			message: 'The new passwords are different',
+			// token
 		});
 	}
 };
