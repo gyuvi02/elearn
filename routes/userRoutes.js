@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 const ebookRouter = require('./ebookRoutes');
+const multer = require('multer');
 
 router.use('/ebooks', ebookRouter); //this means that this specific route will be handled by ebookRoutes
 																				//it calls the root of ebookRoutes, and it is OK for us, the GET there leads to getAllEbooks,
@@ -18,7 +19,7 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 router.use(authController.protect);
 
 router.patch('/updatemypassword', authController.updatePassword);
-router.patch('/updateMe', userController.updateMe);
+router.patch('/updateMe', userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe);
 router.get('/me', userController.getMe, userController.getUser);
 
 router.route('/')

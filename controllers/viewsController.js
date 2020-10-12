@@ -55,12 +55,18 @@ exports.getOneEbook = catchAsync(async (req, res, next) => {
 });
 
 exports.getAccount = (req, res) => {
-	console.log(req.user);
+	// console.log(req.user);
 	res.status(200).render('account', {
 		title: 'Your account'
 	});
 };
 
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+	res.status(200).render('forgotPassword', {
+		title: 'New password',
+		url: '/forgotPassword'
+	});
+});
 
 
 

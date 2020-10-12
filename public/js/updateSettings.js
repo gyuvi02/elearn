@@ -1,26 +1,39 @@
 import axios from 'axios';
 import { showAlert } from './alert';
 
+// export const updateUserData = async (data) => {
+// 	try {
+// 		const url = '/api/v1/users/updateMe';
+//
+// 		const res = await axios({
+// 			method: 'PATCH',
+// 			url,
+// 			data
+// 		});
+//
+// 		if (res.data.status === 'success') {
+// 			showAlert('success', `Your user data was updated successfully!`);
+// 		}
+// 	} catch (err) {
+// 		showAlert('error', err.response.data.message);
+// 	}
+// };
 
-export const updateUserData = async (firstName, lastName, email, photo) => {
+export const updateUserData = async (data) => {
 	try {
+		const url = '/api/v1/users/updateMe';
+
 		const res = await axios({
 			method: 'PATCH',
-			url: 'http://127.0.0.1:3000/api/v1/users/updateMe',
-			data: {
-				firstName,
-				lastName,
-				email,
-				photo
-			}
+			url,
+			data
 		});
 
 		if (res.data.status === 'success') {
-			showAlert('success', `Your user data was updated successfully!`,2);
+			showAlert('success', `Your user data was updated, reload the page to check the changes!`, 4);
 		}
-
 	} catch (err) {
-		showAlert('error', err.response.data.message, 2);
+		showAlert('error', err.response.data.message,4);
 	}
 };
 
@@ -28,7 +41,7 @@ export const updateUserPassword = async (passwordCurrent, password, passwordConf
 	try {
 		const res = await axios({
 			method: 'PATCH',
-			url: 'http://127.0.0.1:3000/api/v1/users/updatemypassword',
+			url: '/api/v1/users/updatemypassword',
 			data: {
 				passwordCurrent,
 				password,

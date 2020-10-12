@@ -130,6 +130,10 @@ exports.restrictTo = (...roles) => {
 };
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
+	if (req.cookies.jwt ) {
+		console.log('You are already logged in!');
+		return next (new AppError('You are already logged in! Please log out before you ask for a new password', 401));
+	}
 	const user = await User.findOne({ email: req.body.email });
 
 	if (!user) {

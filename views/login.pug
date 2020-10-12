@@ -16,9 +16,9 @@ block content
                 form.login-form
                     span.login-form-title
                         | Login into your account
-                    .wrap-input.validate-input(data-validate='Valid email is required: ex@abc.xyz')
+                    .wrap-input(data-validate='Valid email is required: ex@abc.xyz')
                         input#login-input-email(type='email' name='email' placeholder='Email' required)
-                    .wrap-input.validate-input(data-validate='Password is required')
+                    .wrap-input(data-validate='Password is required')
                         input#login-input-password(type='password' name='pass' placeholder='Password' required)
                     .container-login-btn
                     button.login-btn Login
@@ -28,6 +28,6 @@ block content
                     //        | Forgot Password?
                     //button.button-forgot
                     //    | Forgot password?
-                    a(href='/') Forgot password?
+                    a(href='/forgotPassword') Forgot password?
 
     //script(src='js/main.js')

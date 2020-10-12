@@ -8,8 +8,6 @@ header#header.clear
         if user
             ul
                 li
-                    a.header-date.span= moment(Date.now()).format('MMMM DD. YYYY')
-                li
                     a.header-button.header-logout-button Log out
                 li
                     a.header-button(href='/me')
@@ -20,11 +18,9 @@ header#header.clear
         else
             ul
                 li
-                    a.header-date.span= moment(Date.now()).format('MMMM DD. YYYY')
-
                     a.button.header-button
                         span Help
-                    if url==='/login'
+                    if url==='/forgotPassword' || url==='/login'
                         a.button.header-button(href='/')
                             span Main
                     else

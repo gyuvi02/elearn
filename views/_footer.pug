@@ -5,7 +5,7 @@
     // Section One
     section.one_quarter
         nav
-            a(href='#') Forgot your password?
+            a(href='/forgotPassword') Forgot your password?
     // Section Two
     section.two_quarter
         nav
@@ -20,8 +20,10 @@
             a(href='#') Lorem ipsum dolor sit
     // Section Five
     section.five_quarter
-        nav
-            a(href='/') EbooksForLearning.org
+        a.header-date.span= moment(Date.now()).format('MMMM DD. YYYY')
+
+        //nav
+        //    a(href='/') EbooksForLearning.org
     //        a.span= datetime.toLocaleString('en-us', {month: 'long', day: 'numeric', year: 'numeric'})
 
 // Copyright
