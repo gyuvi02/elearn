@@ -658,9 +658,10 @@ input, textarea, select{font-size:18px; font-family:Georgia, serif; padding: 5px
 }
 
 .forgot-text {
+    text-transform: uppercase;
     margin: 40px 40px;
     text-align: center;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: #e6810e;
     letter-spacing: 0.1rem;
@@ -692,7 +693,7 @@ input, textarea, select{font-size:18px; font-family:Georgia, serif; padding: 5px
     color: #201e4a;
     text-transform: uppercase;
 
-    width: 100px;
+    width: 200px;
     /*height: 30px;*/
     border-top-left-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -705,10 +706,10 @@ input, textarea, select{font-size:18px; font-family:Georgia, serif; padding: 5px
     /*justify-content: center;*/
     align-items: center;
     padding: 8px 8px;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s;
+    /*-webkit-transition: all 0.4s;*/
+    /*-o-transition: all 0.4s;*/
+    /*-moz-transition: all 0.4s;*/
+    /*transition: all 0.4s;*/
 }
 
 .forgot-btn:hover {

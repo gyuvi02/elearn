@@ -61,7 +61,10 @@ if (userPasswordForm)
 if (forgotPasswordForm)
 	forgotPasswordForm.addEventListener('submit', async e => {
 		e.preventDefault();
+		document.querySelector('.btn-send-email').textContent = 'Sending...';
 		const email = document.getElementById('forgot-input-email').value;
-		passwordReplace(email);
+		await passwordReplace(email);
+		document.querySelector('.btn-send-email').textContent = 'Submit';
+
 	});
 

@@ -1,6 +1,70 @@
 extends index
 
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`images/icons.svg#icon-${icon}`)
+            | #{text}
+
+
+
 block content
     main.main
-        .login-btn= ebookArray
+        .user-view
+            nav.user-view__menu
+                ul.side-nav
+                    +navItem('/me', 'User page', 'users', true)
+                    +navItem('/my-ebooks', 'My ebooks', 'bookmark')
 
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-smaller Your e-books
+
+                //ul
+                //    .heading-smaller
+                //        each book in userCourses
+                //            each title in book
+                //                li= title.titleBook + `, ` + title.coverPhoto
+
+            .card-container
+                each course in userCourses
+                    .card
+                        each title in course
+                            .card__header
+                                .card__picture
+                                    .card__picture-overlay &nbsp;
+                                            img.card__picture-img(src=`/images/bookCovers/${title.coverPhoto}.jpg`, alt=`${title.coverPhoto}`)
+                                h3.heading-tertirary
+                                    span= title.titleBook
+
+                            .card__details
+                                p.card__text= title.summaryEbook
+                            //    .card__data
+                            //        svg.card__icon
+                            //            use(href='/img/icons.svg#icon-map-pin')
+                            //        span= tour.startLocation.description
+                            //    .card__data
+                            //        svg.card__icon
+                            //            use(href='/img/icons.svg#icon-calendar')
+                            //        span= tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+                            //    .card__data
+                            //        svg.card__icon
+                            //            use(href='/img/icons.svg#icon-flag')
+                            //        |
+                            //        span= `${tour.locations.length} stops`
+                            //    .card__data
+                            //        svg.card__icon
+                            //            use(href='/img/icons.svg#icon-user')
+                            //        span= `${tour.maxGroupSize} people`
+                            //
+                            //.card__footer
+                            //    p
+                            //        span.card__footer-value= `$${tour.price}`
+                            //        |
+                            //        span.card__footer-text per person
+                            //    p.card__ratings
+                            //        span.card__footer-value= tour.ratingsAverage
+                            //        span.card__footer-text= ` rating (${tour.ratingsQuantity})`
+                            //    a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details
+                        //

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { showAlert } from './alert';
-import {updateUserPassword} from "./updateSettings";
+// import {updateUserPassword} from "./updateSettings";
 
 
 export const passwordReplace = async (email) => {

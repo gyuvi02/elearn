@@ -17,24 +17,19 @@ exports.getLoginForm = (req, res) => {
 };
 
 exports.getMyEbooks = catchAsync (async (req, res, next) => {
-	let ebookArray = [];
-	const ebook = await Ebook.findById(req.user.courses);   //user should exist as we come here from .protect authorization
+	let userCourses = [];
+	// const ebook = await Ebook.findById(req.user.courses);   //user should exist as we come here from .protect authorization
 														//it'll be an array if the user has multiple books
 	for (const current of req.user.courses) {
-		const newBook = await Ebook.find({_id: current});
-		ebookArray.push(newBook[0].titleBook);
+		const newBook = await Ebook.find({_id: current}, {_id: 0, titleBook: 1,
+			summaryEbook: 1, coverPhoto: 1 });
+		userCourses.push(newBook);
 	}
-	if (ebook.isEmpty) {
-		return next(new AppError('There are no ebooks for this user', 404));
-	} else {
-		console.log(ebookArray);
+
 		res.status(200).render('myebooks', {
 			title: 'My Ebooks',
-			data: {
-				ebookArray
-			}
+			userCourses
 		});
-	}
 });
 
 exports.getOneEbook = catchAsync(async (req, res, next) => {
